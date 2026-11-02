@@ -1,0 +1,197 @@
+/* =========================================================
+   KANTINKU - CUSTOM STYLESHEET (TEMA LOGO CERIA & MODERN)
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Palet Warna Utama daripada Logo */
+  --primary-blue: #2563eb;       /* Biru Elektrik (Dompet & Phone Frame) */
+  --sky-blue: #38bdf8;           /* Biru Muda / Sky Blue */
+  --accent-yellow: #f59e0b;      /* Kuning Emas / Syiling Rp */
+  --bright-yellow: #fbbf24;      /* Kuning Cerah Latar Belakang */
+  --pink-accent: #ec4899;        /* Pink Ceria (Bubble Tick) */
+  --green-leaf: #22c55e;         /* Hijau Daun Refreshing */
+  
+  /* Latar Belakang Bergradien Cerah */
+  --bg-gradient: linear-gradient(135deg, #fffbe3 0%, #e0f2fe 50%, #fef2f2 100%);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg-gradient);
+  color: #1e293b;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #93c5fd;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue);
+}
+
+/* =========================================================
+   1. HEADER & NAVBAR TEMA BIRU & AMBER
+   ========================================================= */
+
+header {
+  background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 50%, #0284c7 100%) !important;
+  box-shadow: 0 4px 20px -5px rgba(37, 99, 235, 0.3);
+}
+
+/* =========================================================
+   2. LOGIN SECTION & ANIMASI LOGO
+   ========================================================= */
+
+#login-view {
+  animation: fadeIn 0.4s ease-out;
+}
+
+#login-view > div {
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.92);
+  border: 2px solid #fef08a; /* Border Kuning Halus */
+  box-shadow: 0 25px 30px -5px rgba(37, 99, 235, 0.12), 0 10px 15px -6px rgba(245, 158, 11, 0.1);
+}
+
+/* Frame Logo 3D Effect */
+.w-32.h-32 {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 12px 20px -3px rgba(245, 158, 11, 0.3);
+  border-color: #fef08a !important;
+}
+
+.w-32.h-32:hover {
+  transform: translateY(-6px) scale(1.05) rotate(2deg);
+  box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.3);
+}
+
+/* Tab Peran Login */
+#tab-buyer.bg-white {
+  color: var(--primary-blue) !important;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+}
+
+#tab-seller.bg-white {
+  color: #d97706 !important;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.15);
+}
+
+/* Input Form Focus */
+input:focus, select:focus {
+  transition: all 0.2s ease;
+  border-color: var(--sky-blue) !important;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25) !important;
+}
+
+/* =========================================================
+   3. BANNER & KAD MENU MAKANAN
+   ========================================================= */
+
+/* Banner Countdown Istirahat */
+.bg-gradient-to-r {
+  background: linear-gradient(135deg, #2563eb 0%, #0284c7 60%, #38bdf8 100%) !important;
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+}
+
+/* Kad Produk Makanan */
+#products-grid > div {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #e2e8f0;
+}
+
+#products-grid > div:hover {
+  transform: translateY(-5px);
+  border-color: #bfdbfe;
+  box-shadow: 0 15px 25px -5px rgba(37, 99, 235, 0.12), 0 8px 10px -6px rgba(245, 158, 11, 0.08);
+}
+
+#products-grid img {
+  transition: transform 0.4s ease;
+}
+
+#products-grid > div:hover img {
+  transform: scale(1.08);
+}
+
+/* Butang Pesan Makanan */
+#products-grid button {
+  background-color: #eff6ff;
+  color: var(--primary-blue);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+#products-grid button:hover:not(:disabled) {
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* =========================================================
+   4. MODAL & QRIS TEMA WARNA LOGO
+   ========================================================= */
+
+#qris-modal > div, #ticket-modal > div, #add-product-modal > div {
+  border-top: 6px solid var(--primary-blue);
+}
+
+#ticket-modal > div {
+  border-top-color: var(--accent-yellow) !important;
+}
+
+/* Container QR Code */
+#qrcode-display {
+  display: inline-block;
+  padding: 12px;
+  background: #ffffff;
+  border: 2px solid #fef08a;
+  border-radius: 20px;
+  box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.15);
+}
+
+#qrcode-display img {
+  margin: 0 auto;
+}
+
+/* =========================================================
+   5. ANIMASI & KESAN KHAS
+   ========================================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}

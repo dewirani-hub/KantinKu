@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KantinKu - Pre-Order Kantin Sekolah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER / NAVBAR -->
+    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showSection('student-view')">
+                <div class="bg-white text-indigo-600 px-3 py-1.5 rounded-xl shadow-md flex items-center justify-center font-black text-xl tracking-wider">
+                    <i class="fa-solid fa-utensils text-amber-500 mr-2"></i>
+                    <span>KANTIN</span><span class="text-indigo-600">KU</span>
+                </div>
+            </div>
+
+            <div id="user-bar" class="hidden flex items-center space-x-3">
+                <div id="user-info" class="text-right hidden md:block">
+                    <p id="user-name-display" class="font-bold text-sm leading-tight"></p>
+                    <p id="user-role-display" class="text-xs text-indigo-200 capitalize"></p>
+                </div>
+                <button onclick="logout()" class="bg-indigo-700 hover:bg-indigo-800 px-3 py-1.5 rounded-lg text-sm transition font-medium flex items-center">
+                    <i class="fa-solid fa-right-from-bracket mr-1.5"></i> Keluar
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4">
+
+        <!-- 1. LOGIN SECTION -->
+        <section id="login-view" class="py-8 flex justify-center items-center min-h-[80vh]">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 max-w-md w-full text-center relative overflow-hidden">
+                
+                <!-- Logo Aplikasi -->
+                <div class="mb-6 flex flex-col items-center">
+                    <div class="w-32 h-32 rounded-2xl overflow-hidden shadow-md border-4 border-indigo-50 p-1 bg-white mb-3 hover:scale-105 transition-transform duration-300">
+                        <img src="WhatsApp Image 2026-09-21 at 19.21.01.jpeg" alt="KantinKu Logo" class="w-full h-full object-cover rounded-xl" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1556742049-0a670f4a4591?w=300&auto=format&fit=crop&q=80';">
+                    </div>
+                    
+                    <div class="inline-flex items-center justify-center">
+                        <span class="font-black text-2xl tracking-wider text-indigo-900">KANTIN</span>
+                        <span class="font-black text-2xl tracking-wider text-indigo-600">KU</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-1">Sistem Pre-Order & Pembayaran Kantin</p>
+                </div>
+
+                <h2 class="text-lg font-bold text-slate-800 mb-1">Selamat Datang!</h2>
+                <p class="text-xs text-slate-500 mb-6">Silakan pilih jenis akun untuk masuk</p>
+
+                <!-- Tab Peran Akun -->
+                <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-xl mb-6">
+                    <button id="tab-buyer" type="button" onclick="switchLoginRole('buyer')" class="py-2 text-sm font-semibold rounded-lg transition bg-white text-indigo-600 shadow-sm">
+                        <i class="fa-solid fa-user-graduate mr-1"></i> Pembeli (Siswa)
+                    </button>
+                    <button id="tab-seller" type="button" onclick="switchLoginRole('seller')" class="py-2 text-sm font-semibold rounded-lg transition text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-store mr-1"></i> Penjual (Kantin)
+                    </button>
+                </div>
+
+                <!-- Form Login Siswa -->
+                <form id="form-buyer" onsubmit="loginBuyer(event)" class="space-y-4 text-left">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">NISN Siswa</label>
+                        <input type="text" id="nisn-input" required placeholder="Contoh: 0051234567" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
+                        <input type="text" id="student-name-input" required placeholder="Masukkan nama kamu" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-md flex items-center justify-center">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i> Masuk Sebagai Pembeli
+                    </button>
+                </form>
+
+                <!-- Form Login Penjual -->
+                <form id="form-seller" onsubmit="loginSeller(event)" class="space-y-4 text-left hidden">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Stand Kantin</label>
+                        <input type="text" id="seller-name-input" required placeholder="Contoh: Kantin Bu Ani" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+                        <input type="password" id="seller-pass-input" required placeholder="Masukkan password" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl transition shadow-md flex items-center justify-center">
+                        <i class="fa-solid fa-store mr-2"></i> Masuk Dashboard Penjual
+                    </button>
+                </form>
+
+            </div>
+        </section>
+
+        <!-- 2. DASHBOARD SISWA -->
+        <section id="student-view" class="hidden space-y-6">
+            
+            <!-- Banner Informasi Jam Istirahat -->
+            <div class="bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-2xl p-6 text-white shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <span class="bg-indigo-500/50 text-indigo-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Pre-Order KantinKu</span>
+                    <h3 class="text-2xl font-black mt-2">Pesan Sebelum Istirahat!</h3>
+                    <p class="text-indigo-200 text-sm mt-1">Pesan makanan tanpa perlu antre dan anti kehabisan[cite: 2].</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md px-6 py-3 rounded-xl border border-white/20 text-center min-w-[220px]">
+                    <p id="break-label" class="text-xs text-indigo-200 uppercase tracking-widest font-semibold">Istirahat Ke-1 (09:40)</p>
+                    <div id="break-timer" class="text-2xl font-black text-amber-400 tracking-wider">00:00:00</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Daftar Makanan -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="text" id="search-input" onkeyup="filterMenu()" placeholder="Cari makanan, snack, atau minuman..." class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 shadow-sm">
+                        <select id="category-filter" onchange="filterMenu()" class="bg-white border border-slate-200 rounded-xl text-sm px-3 py-2.5 focus:outline-none focus:border-indigo-500 shadow-sm font-medium text-slate-600">
+                            <option value="all">Semua Kategori</option>
+                            <option value="makanan">Makanan Utama</option>
+                            <option value="camilan">Camilan / Snack</option>
+                            <option value="minuman">Minuman Segar</option>
+                        </select>
+                    </div>
+
+                    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- Kolom Keranjang & Pesanan Aktif -->
+                <div class="space-y-6">
+                    <!-- Keranjang -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+                        <h3 class="font-bold text-slate-800 flex items-center border-b pb-3 mb-4">
+                            <i class="fa-solid fa-cart-shopping text-indigo-600 mr-2"></i> Keranjang Saya
+                        </h3>
+                        
+                        <!-- Pilihan Sesi Istirahat -->
+                        <div class="mb-4 bg-indigo-50 p-3 rounded-xl border border-indigo-100">
+                            <label class="block text-xs font-bold text-indigo-900 mb-1.5">Pilih Waktu Pengambilan:</label>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <label class="flex items-center space-x-1.5 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:border-indigo-300">
+                                    <input type="radio" name="break-session" value="Istirahat 1 (09.40 - 10.00)" checked class="text-indigo-600">
+                                    <span><strong>Istirahat 1</strong><br><span class="text-[10px] text-slate-500">09.40 - 10.00</span></span>
+                                </label>
+                                <label class="flex items-center space-x-1.5 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:border-indigo-300">
+                                    <input type="radio" name="break-session" value="Istirahat 2 (11.30 - 12.30)" class="text-indigo-600">
+                                    <span><strong>Istirahat 2</strong><br><span class="text-[10px] text-slate-500">11.30 - 12.30</span></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="cart-items-container" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
+
+                        <div id="cart-summary" class="border-t border-slate-100 pt-4 mt-4 space-y-2 hidden">
+                            <div class="flex justify-between text-sm text-slate-600">
+                                <span>Total Item</span>
+                                <span id="cart-total-count" class="font-semibold">0</span>
+                            </div>
+                            <div class="flex justify-between text-base font-bold text-slate-800 pt-1 border-t">
+                                <span>Total Bayar</span>
+                                <span id="cart-total-price" class="text-indigo-600">Rp0</span>
+                            </div>
+                            <button onclick="openCheckoutModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-md flex items-center justify-center mt-3">
+                                <i class="fa-solid fa-qrcode mr-2"></i> Bayar via QRIS
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pesanan Saya -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+                        <h3 class="font-bold text-slate-800 flex items-center border-b pb-3 mb-4">
+                            <i class="fa-solid fa-receipt text-indigo-600 mr-2"></i> Pesanan Aktif
+                        </h3>
+                        <div id="active-orders-list" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DASHBOARD PENJUAL -->
+        <section id="seller-view" class="hidden space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="p-3 bg-indigo-100 text-indigo-600 rounded-xl"><i class="fa-solid fa-cash-register text-2xl"></i></div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Pendapatan Hari Ini</p>
+                        <h4 id="stat-revenue" class="text-xl font-bold text-slate-800">Rp0</h4>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="p-3 bg-amber-100 text-amber-600 rounded-xl"><i class="fa-solid fa-clock text-2xl"></i></div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Perlu Diproses</p>
+                        <h4 id="stat-pending" class="text-xl font-bold text-slate-800">0</h4>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="p-3 bg-emerald-100 text-emerald-600 rounded-xl"><i class="fa-solid fa-circle-check text-2xl"></i></div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Pesanan Selesai</p>
+                        <h4 id="stat-completed" class="text-xl font-bold text-slate-800">0</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b pb-4">
+                    <h3 class="text-lg font-bold text-slate-800">Daftar Pesanan Masuk</h3>
+                    <button onclick="toggleAddProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-4 py-2 rounded-xl transition">
+                        <i class="fa-solid fa-plus mr-2"></i> Tambah Menu Baru
+                    </button>
+                </div>
+
+                <div id="seller-orders-container" class="space-y-4"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-500">
+            &copy; 2026 <strong>KantinKu</strong> - Sistem Pre-Order Kantin Sekolah.
+        </div>
+    </footer>
+
+    <!-- MODAL QRIS -->
+    <div id="qris-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h4 class="font-bold text-slate-800">Pembayaran QRIS Kantin</h4>
+                <button onclick="closeQrisModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <p class="text-xs text-slate-500">Scan QRIS menggunakan M-Banking / E-Wallet[cite: 2]:</p>
+
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 inline-block">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=KANTINKU_DEMO" alt="QRIS" class="mx-auto rounded-lg">
+                <span class="text-[10px] font-bold text-slate-400 block mt-2">NMID: ID102026KANTINKU</span>
+            </div>
+
+            <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 text-left text-xs space-y-1">
+                <div class="flex justify-between">
+                    <span>Target Ambil:</span>
+                    <span id="qris-target-session" class="font-bold text-slate-700">Istirahat 1</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Total Pembayaran:</span>
+                    <span id="qris-total-amount" class="font-bold text-indigo-700">Rp0</span>
+                </div>
+            </div>
+
+            <button onclick="confirmPaymentSimulated()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow-md">
+                <i class="fa-solid fa-circle-check mr-2"></i> Konfirmasi Sudah Bayar
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL TIKET ORDER -->
+    <div id="ticket-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border-t-8 border-indigo-600">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h4 class="font-bold text-slate-800">Tiket Ambil Makanan</h4>
+                <button onclick="closeTicketModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-1">
+                <span id="ticket-code" class="text-2xl font-black tracking-widest text-indigo-600">#A000</span>
+                <p id="ticket-buyer" class="text-xs text-slate-500"></p>
+                <p id="ticket-session" class="text-xs font-bold text-amber-600 bg-amber-50 py-1 rounded-lg border border-amber-200 mt-1"></p>
+            </div>
+
+            <div class="flex justify-center my-2">
+                <div id="qrcode-display" class="p-3 bg-white border border-slate-200 rounded-xl shadow-sm"></div>
+            </div>
+
+            <div id="ticket-items-list" class="text-xs text-slate-600 text-left border-t border-b py-3 space-y-1 max-h-32 overflow-y-auto"></div>
+
+            <button onclick="closeTicketModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL TAMBAH MENU -->
+    <div id="add-product-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h4 class="font-bold text-slate-800">Tambah Menu Makanan/Minuman</h4>
+                <button onclick="toggleAddProductModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form onsubmit="addNewProduct(event)" class="space-y-3 text-left">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Makanan/Minuman</label>
+                    <input type="text" id="new-prod-name" required placeholder="Contoh: Ayam Geprek" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Harga (Rp)</label>
+                        <input type="number" id="new-prod-price" required placeholder="12000" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Stok Awal</label>
+                        <input type="number" id="new-prod-stock" required placeholder="10" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Kategori</label>
+                    <select id="new-prod-cat" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+                        <option value="makanan">Makanan Utama</option>
+                        <option value="camilan">Camilan / Snack</option>
+                        <option value="minuman">Minuman Segar</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">URL Foto (Opsional)</label>
+                    <input type="url" id="new-prod-img" placeholder="https://..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div class="pt-2 flex space-x-2">
+                    <button type="button" onclick="toggleAddProductModal()" class="w-1/2 bg-slate-100 text-slate-700 font-bold py-2.5 rounded-xl">Batal</button>
+                    <button type="submit" class="w-1/2 bg-indigo-600 text-white font-bold py-2.5 rounded-xl">Simpan Menu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
